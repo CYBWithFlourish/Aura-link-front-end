@@ -7,7 +7,7 @@ const navItems = ["Home", "About Us", "Ecosystem", "Lore", "Community"];
 export const Header = () => {
   const {account, provider} = useWallet()
 
-  // console.log("Header account:", provider.getBalance(account));
+  console.log("Header account:", provider?.getAvatar(account||""));
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b border-border">
       {/* Logo */}
