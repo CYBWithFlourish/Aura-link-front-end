@@ -7,6 +7,8 @@ import { WalletTracker } from "./WalletTracker";
 import { Tabs } from "./Ta";
 import { useState,useEffect } from "react";
 import { GigCard } from "./GigCard";
+import Tracker from "../Tracker";
+
 
 
 
@@ -38,6 +40,7 @@ export interface Gig {
   }>;
   _id?: string;
 }
+
 
 
 
@@ -74,7 +77,7 @@ export const CryptoDashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-foreground  text-black">
       <Header />
       <main>
         <ProfileSection />
@@ -91,8 +94,9 @@ export const CryptoDashboard = () => {
              )}
              {!loading && !error && gigs.map((gig, idx) => (
                <GigCard
-                 key={gig._id ?? gig.blockchainGigId ?? idx}
-                 status={gig.status ?? "OPEN"}
+                 key={gig.id}
+                  id={gig.id}
+                 status={gig.status}
                  description={gig.description}
                  price={Number(gig.paymentAmount) || 0}
                />
@@ -112,7 +116,7 @@ export const CryptoDashboard = () => {
    
          {activeTab === "TRACKER" && (
            <div className="p-6 text-muted-foreground text-center py-12">
-             Tracker content
+      <Tracker/>
            </div>
          )}
        </section>
