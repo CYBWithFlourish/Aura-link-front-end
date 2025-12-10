@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useWallet } from "@/hooks/use-wallet";
 import {
   Dialog,
   DialogContent,
@@ -24,9 +25,10 @@ const JobApplicationDialog = ({ trigger, id }: JobApplicationDialogProps) => {
   const [formData, setFormData] = useState({
     name: "",
     message: "",
+    estimatedTime: 1,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Application submitted:", formData);
     setFormData({ name: "", message: "" });
@@ -57,8 +59,8 @@ const JobApplicationDialog = ({ trigger, id }: JobApplicationDialogProps) => {
               id="name"
               type="text"
               placeholder="Enter your full name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formDataExtended.name}
+              onChange={(e) => setFormDataExtended({ ...formDataExtended, name: e.target.value })}
               className="w-full bg-background border-border text-foreground placeholder:text-muted-foreground"
               required
             />
@@ -71,9 +73,24 @@ const JobApplicationDialog = ({ trigger, id }: JobApplicationDialogProps) => {
             <Textarea
               id="message"
               placeholder="Tell us why you're interested in this position..."
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              value={formDataExtended.message}
+              onChange={(e) => setFormDataExtended({ ...formDataExtended, message: e.target.value })}
               className="w-full min-h-[200px] bg-background border-border text-foreground placeholder:text-muted-foreground resize-none"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="estimatedTime" className="text-sm font-medium text-foreground">
+              Estimated time (days)
+            </Label>
+            <Input
+              id="estimatedTime"
+              type="number"
+              min={1}
+              value={formDataExtended.estimatedTime}
+              onChange={(e) => setFormDataExtended({ ...formDataExtended, estimatedTime: Number(e.target.value) })}
+              className="w-full bg-background border-border text-foreground placeholder:text-muted-foreground"
               required
             />
           </div>
