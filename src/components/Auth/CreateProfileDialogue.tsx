@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { GradientLoadingAnimation, SandyLoadingAnimation } from "../ui/Loading";
 
 interface CreateProfileProps {
   isOpen: boolean;
@@ -77,7 +78,7 @@ export const CreateProfileDialog = ({
 
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Profile"}
+            {isLoading ? <SandyLoadingAnimation /> : "Create Profile"}
           </Button>
         </DialogFooter>
       </DialogContent>

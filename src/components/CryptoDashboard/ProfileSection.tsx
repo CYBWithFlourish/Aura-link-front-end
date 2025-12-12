@@ -86,7 +86,10 @@ export const ProfileSection = () => {
       {/* Profile Info */}
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-4">
-          NAME <span className="text-muted-foreground">//</span>
+          NAME{" "}
+          <span className="text-muted-foreground">
+            {userProfile?.displayName}
+          </span>
         </h1>
 
         <div className="flex flex-wrap items-center gap-4 mb-4 text-black">
@@ -117,6 +120,7 @@ export const ProfileSection = () => {
           </button>
           <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <span>BIO</span>
+            <span>{userProfile?.bio}</span>
           </button>
         </div>
       </div>
