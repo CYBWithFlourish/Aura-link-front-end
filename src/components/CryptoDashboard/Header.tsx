@@ -44,7 +44,7 @@
 //   );
 // };
 
-import { User, Wallet } from "lucide-react";
+import { User, Wallet, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWallet } from "@/hooks/use-wallet";
 import { useUserAuth } from "@/hooks/use-user-auth";
@@ -53,7 +53,7 @@ import { CreateProfileDialog } from "@/components/Auth/CreateProfileDialogue";
 const navItems = ["Home", "About Us", "Ecosystem", "Lore", "Community"];
 
 export const Header = () => {
-  const { account, connectWallet, isConnected } = useWallet();
+  const { account, connectWallet, isConnected, disconnectWallet } = useWallet();
   const { userProfile, isNewUser, registerUser } = useUserAuth();
 
   return (
@@ -104,12 +104,12 @@ export const Header = () => {
           {isConnected && userProfile && (
             <Button variant="outline" className="gap-2 rounded-full px-4">
               <span className="text-sm">
-                {userProfile.displayName || "User"}
+                {userProfile?.displayName || "User"}
               </span>
 
-              {userProfile.profileImage ? (
+              {userProfile?.profileImage ? (
                 <img
-                  src={userProfile.profileImage}
+                  src={userProfile?.profileImage}
                   alt="avatar"
                   className="w-6 h-6 rounded-full object-cover"
                 />
@@ -118,6 +118,20 @@ export const Header = () => {
                   <User className="w-3 h-3" />
                 </div>
               )}
+            </Button>
+          )}
+
+          {/*  Disconnect Button */}
+          {/* Only visible when connected.*/}
+          {isConnected && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={disconnectWallet}
+              title="Disconnect Wallet"
+              className="hover:bg-destructive/10 hover:text-destructive transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
             </Button>
           )}
         </div>
