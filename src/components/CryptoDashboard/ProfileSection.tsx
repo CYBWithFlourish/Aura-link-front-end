@@ -11,6 +11,7 @@ export const ProfileSection = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  console.log(userProfile)
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
@@ -85,11 +86,9 @@ export const ProfileSection = () => {
 
       {/* Profile Info */}
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-4">
-          NAME{" "}
-          <span className="text-muted-foreground">
-            {userProfile?.displayName}
-          </span>
+        <h1 className="text-3xl font-bold mb-4 uppercase">
+          {userProfile?.displayName || "User"}
+        
         </h1>
 
         <div className="flex flex-wrap items-center gap-4 mb-4 text-black">
@@ -113,7 +112,7 @@ export const ProfileSection = () => {
 
         <div className="flex items-center gap-4">
           <div className="px-3 py-1 bg-white text-black border border-gray-300 rounded-sm text-xs font-semibold">
-            @MEDIA HANDLE
+            @{userProfile?.displayName || "username"}
           </div>
           <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <Share2 className="w-4 h-4" />
