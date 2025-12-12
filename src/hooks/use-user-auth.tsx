@@ -33,8 +33,8 @@ export const useUserAuth = () => {
 
         if (response.ok) {
           console.log(response)
-          const userData = await response.json();
-          setUserProfile(userData);
+          const {user} = await response.json();
+          setUserProfile(user);
           setIsNewUser(false);
         } else if (response.status === 404) {
           // User connects wallet but isn't in MongoDB yet
