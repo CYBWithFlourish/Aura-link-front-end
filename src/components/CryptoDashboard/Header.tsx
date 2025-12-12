@@ -51,7 +51,20 @@ import { useUserAuth } from "@/hooks/use-user-auth";
 import { CreateProfileDialog } from "@/components/Auth/CreateProfileDialogue";
 import logo from "@/assets/logo.png";
 
-const navItems = ["Home", "About Us", "Ecosystem", "Lore", "Community"];
+interface NavItem {
+  name: string;
+  link: string;
+}
+
+const navItems: NavItem[] = [
+  { name: "Home", link: "/" },
+  { name: "About Us", link: "/about" },
+  { name: "Ecosystem", link: "/ecosystem" },
+  { name: "Lore", link: "/lore" },
+  { name: "Community", link: "/community" },
+];
+
+
 
 export const Header = () => {
   const { account, connectWallet, isConnected, disconnectWallet } = useWallet();
@@ -65,18 +78,18 @@ export const Header = () => {
           <img src={logo} alt="Logo" className="h-8 w-auto" />
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-12">
-          {navItems.map((item) => (
-            <a
-              key={item}
-              href="#"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
+      {/* Navigation */}
+      <nav className="hidden md:flex items-center gap-8">
+        {navItems.map((item, idx) => (
+          <a
+            key={idx}
+            href={item.link}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {item.name}
+          </a>
+        ))}
+      </nav>
 
         {/* --- DYNAMIC ACTION AREA --- */}
         <div className="flex items-center gap-4">
