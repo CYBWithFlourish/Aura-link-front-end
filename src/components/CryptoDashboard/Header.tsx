@@ -35,6 +35,7 @@ export const Header = () => {
         {/* --- DYNAMIC ACTION AREA --- */}
         <div className="flex items-center gap-4">
           {/* State 1: Wallet Not Connected */}
+          {/* State 1: Wallet Not Connected - Always Show Button */}
           <Button onClick={connectWallet} className="gap-2 bg-black text-white hover:bg-gray-800 rounded-full px-6 shadow-md">
             <Wallet className="w-4 h-4" />
             Connect

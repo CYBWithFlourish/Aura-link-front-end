@@ -1,12 +1,43 @@
+import { useRef, useState } from "react";
 import { Upload, Star, Share2, FileText, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useUserAuth } from "@/hooks/use-user-auth";
+import { useWallet } from "@/hooks/use-wallet";
 
 export const ProfileSection = () => {
   const { userProfile } = useUserAuth();
+  const { account } = useWallet();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  const formatAddress = (addr?: string) => {
+    if (!addr) return "...................";
+    return `${addr.slice(0, 7)}...${addr.slice(-6)}`;
+  };
 
   return (
     <section className="px-6 py-8 border-b border-border ">
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept="image/*"
+      />
 
       {/* Top Bar: Rankings (Left) and Profile (Right) */}
       <div className="flex items-center justify-between mb-12">
@@ -27,7 +58,10 @@ export const ProfileSection = () => {
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium">Profile</span>
           <div className="w-10 h-10 rounded-full bg-muted border border-black flex items-center justify-center overflow-hidden">
-            {userProfile?.profileImage ? (
+            {/* Show Preview if available, otherwise User Profile Image, otherwise Placeholder */}
+            {previewUrl ? (
+              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+            ) : userProfile?.profileImage ? (
               <img src={userProfile.profileImage} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <User className="w-5 h-5 text-muted-foreground" />
@@ -38,13 +72,19 @@ export const ProfileSection = () => {
 
       {/* Avatar Upload */}
       <div className="flex justify-center mb-8">
-        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border-2 border-dashed border-border hover:border-primary transition-colors cursor-pointer">
-          <Upload className="w-6 h-6 text-background" />
+        <div
+          onClick={handleUploadClick}
+          className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border-2 border-dashed border-border hover:border-primary transition-colors cursor-pointer overflow-hidden relative"
+        >
+          {previewUrl ? (
+            <img src={previewUrl} alt="Preview" className="w-full h-full object-cover opacity-50" />
+          ) : null}
+          <Upload className="w-6 h-6 text-foreground absolute" />
         </div>
       </div>
 
       {/* Profile Info */}
-      <div className="max-w-2xl">
+      <div className="w-full">
         <h1 className="text-3xl font-bold mb-4">
           NAME <span className="text-muted-foreground">//</span>
         </h1>
@@ -59,21 +99,23 @@ export const ProfileSection = () => {
 
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">ADDRESS</span>
-            <span className="font-mono text-sm">4567890......456789</span>
+            <span className="font-mono text-sm">{formatAddress(account || "")}</span>
           </div>
 
-          <Upload className="w-5 h-5 text-muted ml-auto cursor-pointer hover:text-foreground transition-colors" />
+          <Upload
+            onClick={handleUploadClick}
+            className="w-5 h-5 text-muted ml-auto mr-[30px] cursor-pointer hover:text-foreground transition-colors"
+          />
         </div>
 
         <div className="flex items-center gap-4">
-          <Badge variant="secondary" className="rounded-md">
+          <div className="px-3 py-1 bg-white text-black border border-gray-300 rounded-sm text-xs font-semibold">
             @MEDIA HANDLE
-          </Badge>
+          </div>
           <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <Share2 className="w-4 h-4" />
           </button>
           <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <FileText className="w-4 h-4" />
             <span>BIO</span>
           </button>
         </div>
